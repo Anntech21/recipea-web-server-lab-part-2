@@ -36,3 +36,18 @@ app.get("/trash-recipe/:id", (req, res) => {
     });
   });
 });
+
+// Handler for how to respond to requests to base url with /create-recipea-web-server-lab-part-2/[a note id] at the end.
+app.get("/delete-note/:id", (req, res) => {
+  const id = Number(req.params.id);
+  fs.readFile("../data/data.json", "utf8", (err, data) => {
+    const notes = JSON.parse(data);
+    // Deletes 1 item starting at index `id`.
+    // Research the splice array method for how this works!
+    notes.splice(id, 1);
+    const jsonVersion = JSON.stringify(notes, null, 2);
+    fs.writeFile("../data/data.json", jsonVersion, "utf8", (err) => {
+      res.send("Successfully deleted note.");
+    });
+  });
+});
